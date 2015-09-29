@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
 
 namespace Org.Kevoree.Library.Annotation
 {
@@ -35,6 +37,16 @@ namespace Org.Kevoree.Library.Annotation
         public bool FilterByAttribute(Type t, Type[] types)
         {
             return GetTypeDefinitionSub(t, types).Count > 0;
+        }
+
+        public IEnumerable<FieldInfo> filterFieldsByAttribute(Type target, Type typeOutput)
+        {
+            return target.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(x => x.GetCustomAttribute(typeOutput) != null);
+        }
+
+        public IEnumerable<MethodInfo> filterMethodsByAttribute(Type target, Type type)
+        {
+            return target.GetMethods().Where(x => x.GetCustomAttribute(type) != null);
         }
     }
 }
