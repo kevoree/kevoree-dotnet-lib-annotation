@@ -14,6 +14,19 @@ namespace Org.Kevoree.Library.Annotation
             }
         }
 
+        public void injectByName<T>(object target, T value, string fieldName)
+        {
+            var field = GetFields(target).Where(FilterByAnnotation).Where(FilterByFieldType<T>).Where(x => x.Name == fieldName).First();
+            field.SetValue(target, value);
+        }
+
+        public void callByName(object target, string methodName, string value)
+        {
+            var method = target.GetType().GetMethods().Where(x => x.GetCustomAttribute(typeof(U)) != null).Where(y => y.Name == methodName).First();
+            method.Invoke(target, new object[1] {value});
+        }
+
+
         public FieldInfo[] GetFields(object target)
         {
             return target.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
