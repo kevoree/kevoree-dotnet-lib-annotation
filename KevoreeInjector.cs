@@ -22,14 +22,34 @@ namespace Org.Kevoree.Library.Annotation
 
         public void callByName(object target, string methodName, string value)
         {
-            var method = target.GetType().GetMethods().Where(x => x.GetCustomAttribute(typeof(U)) != null).Where(y => y.Name == methodName).First();
+            var method = GetMethods(target).Where(x => x.GetCustomAttribute(typeof(U)) != null).Where(y => y.Name == methodName).First();
             method.Invoke(target, new object[1] {value});
+        }
+
+        public void call(object target, string value)
+        {
+            var method = GetMethods(target).Where(x => x.GetCustomAttribute(typeof(U)) != null).First();
+            object[] paramz;
+            if (method.GetParameters().Length == 1)
+            {
+                paramz = new object[1] {value};
+            }
+            else
+            {
+                paramz = new object[2] {value, null};
+            }
+            method.Invoke(target, paramz);
         }
 
 
         public FieldInfo[] GetFields(object target)
         {
             return target.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        }
+
+        public MethodInfo[] GetMethods(object target)
+        {
+            return target.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         }
 
 
