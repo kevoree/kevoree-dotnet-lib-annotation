@@ -16,6 +16,6 @@
     <tags>Kevoree Annotation Library</tags>
   </metadata>
   <files>
-    <file src="bin/Release/kevoree-dotnet-lib-annotation.dll" target="lib/net40/kevoree-dotnet-lib-annotation.dll" />
+    <file src="bin/Release/kevoree-dotnet-lib-annotation.dll" target="lib/net45/kevoree-dotnet-lib-annotation.dll" />
   </files>
 </package>
